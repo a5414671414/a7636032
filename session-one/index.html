@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
+		<script src="../libs/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../libs/jquery.mousewheel.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			html body{
+				/*position: absolute;
+				top: 0px;bottom: 0px;left: 0px;right: 0px;
+				background-color: #3f464e;*/
+				height: 100%;
+				overflow: hidden;
+			}
+			#allShow{
+				position: absolute;
+				top: 0px;bottom: 0px;left: 0px;right: 0px;
+				background-color: #3f464e;
+				transition: all 700ms ease;
+				height: 200%;
+				
+			}
+			#first{
+				height: 50%;
+				background-color: #3f464e;
+				color: white;
+				
+			}
+			#first h1{
+				height: 200px;
+				font-size: 60px;
+				line-height: 200px;
+			}
+			#second{
+				height: 50%;
+				background-color: green;
+			}
+			#third{
+				height: 50%;
+				background-color: red;
+			}
+			#four{
+				height: 50%;
+				background-color: blue;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div id="allShow">
+			<div id="first" class="active">
+				<h1>第一屏</h1>
+			</div>
+			
+			<div id="second">
+				
+			</div>
+			
+			<div id="third">
+				
+			</div>
+			
+			<div id="four">
+				
+			</div>
+		</div>
+		
+	</body>
+</html>
+<script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+//总工程
+var myFirst={
+	init:function(){
+		this.scroll();
+		this.firstScreen();
+	},
+	scroll:function(){
+		//屏幕元素
+		var $show=$('#allShow');
+		//延时器
+		var timer;
+		
+		$(document).on('mousewheel',function(e){
+			
+			//如果在短时间连续滚动滑轮，那么默认只滚一个屏幕
+			clearTimeout(timer);
+			timer=setTimeout(function(){
+				
+				//屏幕内有几个屏的内容
+				var theIndex=$show.find('.active').index();
+				//屏幕内的屏元素
+				var $divShow=$show.children('div');
+				//滑轮的动向,引用了jquery.mousewheel.js，用来兼容火狐和谷歌
+				var conrert = e.originalEvent.wheelDelta?(e.originalEvent.wheelDelta):-e.originalEvent.deltaY;
+				
+				theIndex=0-theIndex;
+				if (conrert > 0) {
+			        // 向上滚
+			        if(theIndex==0){
+			        	//如果已经是第一屏，就不能再向上滚
+			        	return;
+			        	
+			        }
+			        
+			        theIndex++;
+			        
+			    } else if (conrert < 0) {
+			        // 向下滚
+			        if(-theIndex==$divShow.length-1){
+			        	
+			        	//如果已经是最后一屏，就不能再向下滚
+			        	return;
+			        }
+			       
+			        theIndex--;
+			    };
+			    
+			    //屏幕滚动
+			    $show.stop().css('top',theIndex*100+'%');
+			    //表示现在显示的是哪一个屏幕的内容
+			    $divShow.removeClass('active')
+			    .eq(theIndex>0?(theIndex):(-theIndex)).addClass('active');
+			},300)
+			
+		})
+	},
+	firstScreen:function(){
+		
+		
+	}
+}
+
+$(document).ready(function(){
+	myFirst.init();
+	
+})
+</script>
