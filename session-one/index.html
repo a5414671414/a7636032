@@ -5,7 +5,6 @@
 		<title></title>
 		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
 		<script src="../libs/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../libs/jquery.mousewheel.min.js" type="text/javascript" charset="utf-8"></script>
 		<style type="text/css">
 			html body{
 				/*position: absolute;
@@ -82,10 +81,11 @@ var myFirst={
 		var $show=$('#allShow');
 		//延时器
 		var timer;
-		
-		$(document).on('mousewheel',function(e){
-			
-			//如果在短时间连续滚动滑轮，那么默认只滚一个屏幕
+		// 鼠标滑轮滚动后执行的函数
+	    //Firefox只识别DOMMouseScroll
+	    var mousewheelevt=(/Firefox/i.test(navigator.userAgent))?"DOMMouseScroll": "mousewheel";
+	    function mousewheelEvent(e, delta) {
+	        //如果在短时间连续滚动滑轮，那么默认只滚一个屏幕
 			clearTimeout(timer);
 			timer=setTimeout(function(){
 				
@@ -93,8 +93,8 @@ var myFirst={
 				var theIndex=$show.find('.active').index();
 				//屏幕内的屏元素
 				var $divShow=$show.children('div');
-				//滑轮的动向,引用了jquery.mousewheel.js，用来兼容火狐和谷歌
-				var conrert = e.originalEvent.wheelDelta?(e.originalEvent.wheelDelta):-e.originalEvent.deltaY;
+				//滑轮的动向,用原生js来代替滚动
+				var conrert =delta;
 				
 				theIndex=0-theIndex;
 				if (conrert > 0) {
@@ -124,8 +124,31 @@ var myFirst={
 			    $divShow.removeClass('active')
 			    .eq(theIndex>0?(theIndex):(-theIndex)).addClass('active');
 			},300)
-			
-		})
+	        
+	    }
+	                 
+	    //判断是否是IE
+	    if (document.attachEvent) {
+	    	
+	        document.attachEvent("on"+mousewheelevt, function(e) {
+	            mousewheelEvent(e, e.wheelDelta);
+	        });
+	    }
+	
+	    //FireFox(DOMMouseScroll)、Chrome、Opera、safari
+	    else if (document.addEventListener) {
+	    	
+	        document.addEventListener(mousewheelevt, function(e) {
+	            e=e || window.event;
+	            if(e.detail){//Firefox
+	                mousewheelEvent(e, e.detail*40);
+	            }
+	            else if(e.wheelDelta){
+	                mousewheelEvent(e, e.wheelDelta);
+	            }
+	        }, false);
+	    }
+
 	},
 	firstScreen:function(){
 		
