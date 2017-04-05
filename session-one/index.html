@@ -27,7 +27,7 @@
 				color: white;
 				
 			}
-			#first h1{
+			#allShow div h1{
 				height: 200px;
 				font-size: 60px;
 				line-height: 200px;
@@ -54,15 +54,15 @@
 			</div>
 			
 			<div id="second">
-				
+				<h1>第二屏</h1>
 			</div>
 			
 			<div id="third">
-				
+				<h1>第三屏</h1>
 			</div>
 			
 			<div id="four">
-				
+				<h1>第四屏</h1>
 			</div>
 		</div>
 		
@@ -84,6 +84,25 @@ var myFirst={
 		// 鼠标滑轮滚动后执行的函数
 	    //Firefox只识别DOMMouseScroll
 	    var mousewheelevt=(/Firefox/i.test(navigator.userAgent))?"DOMMouseScroll": "mousewheel";
+	    
+	    document.onkeydown=function(e){
+	    	var num=-120;
+	    	if(mousewheelevt=='DOMMouseScroll'){
+	    		num=-num;
+	    	}
+	    	switch(e.which){
+	    		case 38:
+	    		
+	    		mousewheelEvent(null, num);
+	    		break;
+	    		
+	    		case 40:
+	    		mousewheelEvent(null, -num);
+	    		return false;
+	    		break;
+	    	}
+	    }
+	    
 	    function mousewheelEvent(e, delta) {
 	        //如果在短时间连续滚动滑轮，那么默认只滚一个屏幕
 			clearTimeout(timer);
@@ -95,7 +114,9 @@ var myFirst={
 				var $divShow=$show.children('div');
 				//滑轮的动向,用原生js来代替滚动
 				var conrert =delta;
-				
+				if(mousewheelevt=='mousewheel'){
+					conrert=-conrert;
+				}
 				theIndex=0-theIndex;
 				if (conrert > 0) {
 			        // 向上滚
@@ -117,7 +138,7 @@ var myFirst={
 			       
 			        theIndex--;
 			    };
-			    
+			    //console.log(conrert);
 			    //屏幕滚动
 			    $show.stop().css('top',theIndex*100+'%');
 			    //表示现在显示的是哪一个屏幕的内容
