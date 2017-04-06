@@ -3,54 +3,34 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
 		<script src="../libs/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
 		<style type="text/css">
-			html body{
-				/*position: absolute;
-				top: 0px;bottom: 0px;left: 0px;right: 0px;
-				background-color: #3f464e;*/
-				height: 100%;
-				overflow: hidden;
-			}
-			#allShow{
-				position: absolute;
-				top: 0px;bottom: 0px;left: 0px;right: 0px;
-				background-color: #3f464e;
-				transition: all 700ms ease;
-				height: 200%;
-				
-			}
-			#first{
-				height: 50%;
-				background-color: #3f464e;
-				color: white;
-				
-			}
-			#allShow div h1{
-				height: 200px;
-				font-size: 60px;
-				line-height: 200px;
-			}
-			#second{
-				height: 50%;
-				background-color: green;
-			}
-			#third{
-				height: 50%;
-				background-color: red;
-			}
-			#four{
-				height: 50%;
-				background-color: blue;
-			}
+			#icon-slow{
+				font-family:"mockicon";
+				font-style:normal;
+				font-weight:normal;
+				font-variant:normal;
+				speak:none;
+			} 
 		</style>
 	</head>
 	<body>
 		
 		<div id="allShow">
-			<div id="first" class="active">
+			<div id="first">
 				<h1>第一屏</h1>
+				<div class="intro introduce_one">
+					这是第一个测试语句
+				</div>
+				<div class="intro introduce_two">
+					这是第二个测试语句
+				</div>
+				<span id="icon-slow">
+					
+				</span>
 			</div>
 			
 			<div id="second">
@@ -70,112 +50,7 @@
 </html>
 <script src="js/index.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-//总工程
-var myFirst={
-	init:function(){
-		this.scroll();
-		this.firstScreen();
-	},
-	scroll:function(){
-		//屏幕元素
-		var $show=$('#allShow');
-		//延时器
-		var timer;
-		// 鼠标滑轮滚动后执行的函数
-	    //Firefox只识别DOMMouseScroll
-	    var mousewheelevt=(/Firefox/i.test(navigator.userAgent))?"DOMMouseScroll": "mousewheel";
-	    
-	    document.onkeydown=function(e){
-	    	var num=-120;
-	    	if(mousewheelevt=='DOMMouseScroll'){
-	    		num=-num;
-	    	}
-	    	switch(e.which){
-	    		case 38:
-	    		
-	    		mousewheelEvent(null, num);
-	    		break;
-	    		
-	    		case 40:
-	    		mousewheelEvent(null, -num);
-	    		return false;
-	    		break;
-	    	}
-	    }
-	    
-	    function mousewheelEvent(e, delta) {
-	        //如果在短时间连续滚动滑轮，那么默认只滚一个屏幕
-			clearTimeout(timer);
-			timer=setTimeout(function(){
-				
-				//屏幕内有几个屏的内容
-				var theIndex=$show.find('.active').index();
-				//屏幕内的屏元素
-				var $divShow=$show.children('div');
-				//滑轮的动向,用原生js来代替滚动
-				var conrert =delta;
-				if(mousewheelevt=='mousewheel'){
-					conrert=-conrert;
-				}
-				theIndex=0-theIndex;
-				if (conrert > 0) {
-			        // 向上滚
-			        if(theIndex==0){
-			        	//如果已经是第一屏，就不能再向上滚
-			        	return;
-			        	
-			        }
-			        
-			        theIndex++;
-			        
-			    } else if (conrert < 0) {
-			        // 向下滚
-			        if(-theIndex==$divShow.length-1){
-			        	
-			        	//如果已经是最后一屏，就不能再向下滚
-			        	return;
-			        }
-			       
-			        theIndex--;
-			    };
-			    //console.log(conrert);
-			    //屏幕滚动
-			    $show.stop().css('top',theIndex*100+'%');
-			    //表示现在显示的是哪一个屏幕的内容
-			    $divShow.removeClass('active')
-			    .eq(theIndex>0?(theIndex):(-theIndex)).addClass('active');
-			},300)
-	        
-	    }
-	                 
-	    //判断是否是IE
-	    if (document.attachEvent) {
-	    	
-	        document.attachEvent("on"+mousewheelevt, function(e) {
-	            mousewheelEvent(e, e.wheelDelta);
-	        });
-	    }
-	
-	    //FireFox(DOMMouseScroll)、Chrome、Opera、safari
-	    else if (document.addEventListener) {
-	    	
-	        document.addEventListener(mousewheelevt, function(e) {
-	            e=e || window.event;
-	            if(e.detail){//Firefox
-	                mousewheelEvent(e, e.detail*40);
-	            }
-	            else if(e.wheelDelta){
-	                mousewheelEvent(e, e.wheelDelta);
-	            }
-	        }, false);
-	    }
 
-	},
-	firstScreen:function(){
-		
-		
-	}
-}
 
 $(document).ready(function(){
 	myFirst.init();

@@ -1,0 +1,81 @@
+html body{
+	/*position: absolute;
+	top: 0px;bottom: 0px;left: 0px;right: 0px;
+	background-color: #3f464e;*/
+	height: 100%;
+	overflow: hidden;
+}
+#allShow{
+	position: absolute;
+	top: 0px;bottom: 0px;left: 0px;right: 0px;
+	background-color: #3f464e;
+	transition: all 700ms ease;
+	height: 200%;
+	
+}
+#first{
+	height: 50%;
+	background-color: #3f464e;
+	color: white;
+	
+}
+
+#first .intro{
+	width: 20%;
+	line-height: 2rem;
+	font-size: 1rem;
+	margin: 0 auto;
+	visibility: hidden;
+	transform: translateX(280%);
+}
+#first.active .intro{
+	visibility: visible;
+}
+#first.active .intro.introduce_one{
+	-webkit-animation: revolving 800ms forwards 300ms;
+     animation: revolving 800ms forwards 300ms;
+}
+#first.active .intro.introduce_two{
+	/*animation-duration: 500ms;
+	transition: all 500ms ease-in;*/
+	
+	-webkit-animation: revolving 800ms forwards 1100ms;
+     animation: revolving 800ms forwards 1100ms;
+     
+}
+@-webkit-keyframes revolving{
+    0{
+    	-webkit-transform: translateX(280%);
+    }
+    
+    100%{
+    	-webkit-transform: translateX(-50%);
+    }
+}
+@keyframes revolving{
+    0{
+    	transform: translateX(280%);
+    }
+    
+    100%{
+    	transform: translateX(-50%);
+    }
+}
+
+#allShow div h1{
+	height: 5rem;
+	font-size: 2rem;
+	line-height: 5rem;
+}
+#second{
+	height: 50%;
+	background-color: green;
+}
+#third{
+	height: 50%;
+	background-color: red;
+}
+#four{
+	height: 50%;
+	background-color: blue;
+}
